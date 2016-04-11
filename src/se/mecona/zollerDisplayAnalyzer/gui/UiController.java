@@ -5,13 +5,18 @@
  */
 package se.mecona.zollerDisplayAnalyzer.gui;
 
+import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import se.mecona.zollerDisplayAnalyzer.displayAnalyzer.IOResult;
 import java.io.File;
+import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
 import javafx.embed.swing.SwingFXUtils;
 import se.mecona.zollerDisplayAnalyzer.displayAnalyzer.ImageTester;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
@@ -27,11 +32,24 @@ public class UiController {
     
     @FXML
     private ImageView imageView1;
+    
+    @FXML
     private ImageView imageView2;
+    
+    @FXML
+    private Slider thresholdSlider;
+    
+    @FXML
+    private Label thresholdLabel;
+    
 
-    public UiController(ImageTester imageTester) {
-        this.imageTester = imageTester;
+    
+    public UiController() {
+        imageTester = new ImageTester();
+        Globals.getEventBus().register(this);
     }
+
+
     
     @FXML 
     private void onOpen() {
@@ -41,16 +59,13 @@ public class UiController {
         if ( file != null ) {
             IOResult<BufferedImage> iOResult = imageTester.open( file );
             if ( iOResult.isOk() && iOResult.hasData() ) {
-                BufferedImage bimg = iOResult.getData();
-                WritableImage wimg = new WritableImage(bimg.getWidth(), bimg.getHeight());
-                SwingFXUtils.toFXImage(bimg, wimg);
-                imageView1.setImage(wimg);
             }
         }
     }
     
     @FXML
     private void onAnalyze() {
+        imageTester.setThresholdValue( thresholdSlider.getValue() );
         imageTester.analyze();
     }
     
@@ -68,5 +83,29 @@ public class UiController {
         alert.show();
     }
     
+    @Subscribe
+    private void handleDebugImageEvent(ImageEvent event) {
+        BufferedImage image = event.getImage();
+        WritableImage wimg = new WritableImage(image.getWidth(), image.getHeight());
+        SwingFXUtils.toFXImage(image, wimg);
+        switch ( event.getType() ) {
+            case LEFT : imageView1.setImage(wimg);
+            break;
+            
+            case RIGHT : imageView2.setImage(wimg);
+            break;
+            
+        }
+    }
+    
+    public void initialize() {
+            thresholdLabel.textProperty().bind(
+            Bindings.format(
+                "%2.0f",
+                thresholdSlider.valueProperty()
+            )
+        );
+
+    }
 
 }

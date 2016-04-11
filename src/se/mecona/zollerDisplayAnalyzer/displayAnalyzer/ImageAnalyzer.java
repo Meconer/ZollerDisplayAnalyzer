@@ -52,7 +52,7 @@ public class ImageAnalyzer {
         for ( int row = 0; row < raster.getHeight(); row++ ) {
             pixel = raster.getSample(col, row, 1);
             System.out.println("Pixel = " + pixel);
-            if ( (int) pixel != 0 ) return true;
+            if ( (int) pixel != 128 ) return true;
         }
         return false;
     }

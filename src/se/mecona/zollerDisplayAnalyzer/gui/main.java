@@ -10,7 +10,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import se.mecona.zollerDisplayAnalyzer.displayAnalyzer.ImageTester;
 
 /**
  *
@@ -21,10 +20,13 @@ public class main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui.fxml"));
-        loader.setControllerFactory(t -> new UiController(new ImageTester()));
+        
+        loader.setControllerFactory(t -> new UiController());
        
         primaryStage.setScene(new Scene(loader.load()));
+        
         primaryStage.show();
+        
     }
 
     /**

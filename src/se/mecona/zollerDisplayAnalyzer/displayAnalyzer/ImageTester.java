@@ -9,17 +9,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import se.mecona.zollerDisplayAnalyzer.gui.Globals;
+import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 
 /**
  *
  * @author Mats
  */
 public class ImageTester {
-    BufferedImage image;
-
+    private BufferedImage image;
+    private int threshold;
+    
     public IOResult open(File file) {
         try {
             image = ImageIO.read(file);
+            Globals.getEventBus().post(new ImageEvent(ImageEvent.imageType.LEFT, image));
             return new IOResult<>(true, image);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -31,8 +35,15 @@ public class ImageTester {
     public void analyze() {
         if ( image != null ) {
             ZollerImage zollerImage = new ZollerImage( image );
+            zollerImage.setThreshold( threshold );
+            Globals.getEventBus().post(image);
             zollerImage.analyze();
         }
     }
+
+    public void setThresholdValue(double value) {
+        threshold = (int) Math.round(value);
+    }
+
     
 }
