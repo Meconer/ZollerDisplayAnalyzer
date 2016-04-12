@@ -7,6 +7,8 @@ package se.mecona.zollerDisplayAnalyzer.displayAnalyzer;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import se.mecona.zollerDisplayAnalyzer.gui.Globals;
+import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 
 /**
  * Helper util class for image routines on buffered images.
@@ -19,16 +21,18 @@ public class ImageAnalyzer {
         // Get first non empty column
         int startCol = getNonEmptyCol( image, 0, 1 );
         
-        int endCol = getNonEmptyCol(image, image.getWidth()-1, -1);
+        int width = getNonEmptyCol(image, image.getWidth()-1, -1) - startCol;
         
-        image = image.getSubimage(startCol, 0, endCol, image.getHeight()-1);
+        image = image.getSubimage(startCol, 0, width, image.getHeight()-1);
         
         int startRow = getNonEmptyRow( image, 0, 1);
         
-        int endRow = getNonEmptyRow( image, image.getHeight()-1, -1);
+        int height = getNonEmptyRow( image, image.getHeight()-1, -1) - startRow;
         
         
-        return image.getSubimage(0, startRow, image.getWidth()-1, endRow);
+        image = image.getSubimage(0, startRow, image.getWidth()-1, height);
+        Globals.getEventBus().post( new ImageEvent(ImageEvent.imageType.RIGHT, image));
+        return image;
     }
 
     private static int getNonEmptyCol(BufferedImage image, int start, int direction ) {
@@ -48,11 +52,10 @@ public class ImageAnalyzer {
     }
 
     private static boolean colIsBright(Raster raster, int col) {
-        int pixel;
+        int green;
         for ( int row = 0; row < raster.getHeight(); row++ ) {
-            pixel = raster.getSample(col, row, 1);
-            System.out.println("Pixel = " + pixel);
-            if ( (int) pixel != 128 ) return true;
+            green = raster.getSample(col, row, 1);
+            if ( (int) green > 0 ) return true;
         }
         return false;
     }
@@ -61,7 +64,7 @@ public class ImageAnalyzer {
         int pixel;
         for ( int col = 0; col < raster.getHeight(); col++ ) {
             pixel = raster.getSample(col, row, 1);
-            if ( (int) pixel != 0 ) return true;
+            if ( (int) pixel > 0 ) return true;
         }
         return false;
     }

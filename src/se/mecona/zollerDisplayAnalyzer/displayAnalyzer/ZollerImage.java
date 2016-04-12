@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.LookupOp;
 import java.awt.image.ShortLookupTable;
-import jdk.nashorn.internal.objects.Global;
 import se.mecona.zollerDisplayAnalyzer.gui.Globals;
 import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 
@@ -20,7 +19,7 @@ import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 class ZollerImage {
     private static final int DEFAULT_THRESHOLD = 100;
     
-    private final BufferedImage image;
+    private BufferedImage image;
 
     private short thresholdValue = DEFAULT_THRESHOLD;
 
@@ -33,12 +32,14 @@ class ZollerImage {
     public void analyze() {
         if ( image != null ) {
             // Prepare the image for analysis
-            ImageEvent imageEvent = new ImageEvent(ImageEvent.imageType.RIGHT, prepareImage());
-            Globals.getEventBus().post( imageEvent);
+            image = prepareImage();
+            
+            //Globals.getEventBus().post( new ImageEvent(ImageEvent.imageType.RIGHT, image));
             
             // Get the upper half of the image.
             BufferedImage imageHalf = image.getSubimage(0, 0, image.getWidth(), image.getHeight()/2);
             imageHalf = ImageAnalyzer.getNonEmptyPart(imageHalf);
+            //Globals.getEventBus().post( new ImageEvent(ImageEvent.imageType.RIGHT, imageHalf));
         }
         
     }

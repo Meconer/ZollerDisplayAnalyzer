@@ -36,7 +36,6 @@ public class ImageTester {
         if ( image != null ) {
             ZollerImage zollerImage = new ZollerImage( image );
             zollerImage.setThreshold( threshold );
-            Globals.getEventBus().post(image);
             zollerImage.analyze();
         }
     }

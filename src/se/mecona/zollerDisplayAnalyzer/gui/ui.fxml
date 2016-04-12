@@ -31,7 +31,7 @@
       <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="analyzeButton" mnemonicParsing="false" onAction="#onAnalyze" text="Analyze" />
-            <Slider fx:id="thresholdSlider" max="255.0" minorTickCount="1" prefHeight="18.0" prefWidth="254.0" snapToTicks="true" value="100.0" />
+            <Slider fx:id="thresholdSlider" max="255.0" minorTickCount="1" prefHeight="18.0" prefWidth="254.0" snapToTicks="true" value="135.0" />
             <Label fx:id="thresholdLabel" prefHeight="21.0" prefWidth="96.0" />
          </children>
          <BorderPane.margin>
