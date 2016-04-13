@@ -18,6 +18,11 @@ import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
  */
 class ZollerImage {
     private static final int DEFAULT_THRESHOLD = 100;
+    private static final int NO_OF_DIGITS = 10;
+    private static final int PADDING_DIVISOR = 63;
+    private static final int PADDING_FRACTION_FOR_LAST_DIGIT_1 = 50;
+    private static final double SHEAR_VALUE = 0.1;
+    
     
     private BufferedImage image;
 
@@ -38,7 +43,9 @@ class ZollerImage {
             
             // Get the upper half of the image.
             BufferedImage imageHalf = image.getSubimage(0, 0, image.getWidth(), image.getHeight()/2);
-            imageHalf = ImageAnalyzer.getNonEmptyPart(imageHalf);
+            
+            analyzeHalf(imageHalf);
+            
             //Globals.getEventBus().post( new ImageEvent(ImageEvent.imageType.RIGHT, imageHalf));
         }
         
@@ -72,6 +79,27 @@ class ZollerImage {
 
     void setThreshold(int threshold) {
         thresholdValue = (short) threshold;
+    }
+
+    private void analyzeHalf(BufferedImage image) {
+        BufferedImage subImage = ImageAnalyzer.getNonEmptyPart(image, PADDING_DIVISOR, 0 );
+        if ( checkIfLastDigitIsOne(subImage) ) {
+            subImage = ImageAnalyzer.getNonEmptyPart(image, PADDING_DIVISOR, PADDING_FRACTION_FOR_LAST_DIGIT_1 );
+        }
+        Globals.getEventBus().post(new ImageEvent(ImageEvent.imageType.RIGHT, subImage));
+    }
+
+    private boolean checkIfLastDigitIsOne(BufferedImage image) {
+        int width = image.getWidth();
+        int digitAreaWidth = width / NO_OF_DIGITS;
+        BufferedImage lastDigitImage = image.getSubimage(width-digitAreaWidth, 0, digitAreaWidth, image.getHeight());
+        lastDigitImage = ImageAnalyzer.shearImage( lastDigitImage, SHEAR_VALUE );
+        
+        int digitWidth = ImageAnalyzer.calcFilledWidth(lastDigitImage);
+
+        //Globals.getEventBus().post(new ImageEvent( ImageEvent.imageType.RIGHT, lastDigitImage));
+
+        return digitAreaWidth / digitWidth  > 4; // If this digit is a "1" then return true;
     }
 
     

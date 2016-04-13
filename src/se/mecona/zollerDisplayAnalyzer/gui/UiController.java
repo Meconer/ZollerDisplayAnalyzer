@@ -9,7 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import se.mecona.zollerDisplayAnalyzer.displayAnalyzer.IOResult;
 import java.io.File;
-import javafx.beans.InvalidationListener;
+import java.nio.file.Path;
 import javafx.beans.binding.Bindings;
 import javafx.embed.swing.SwingFXUtils;
 import se.mecona.zollerDisplayAnalyzer.displayAnalyzer.ImageTester;
@@ -54,7 +54,16 @@ public class UiController {
     @FXML 
     private void onOpen() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("E:\\Mats"));
+        File dir = new File("E:\\Mats");
+        if ( dir.exists()) {
+            fileChooser.setInitialDirectory(dir);
+        } else {
+            dir = new File( "C:\\Users\\Mcx8\\Documents\\NetBeansProjects\\ZollerDisplayAnalyzer\\TestImages");
+            if ( dir.exists()) {
+                fileChooser.setInitialDirectory(dir);
+            }
+        }
+                
         File file = fileChooser.showOpenDialog(null);
         if ( file != null ) {
             IOResult<BufferedImage> iOResult = imageTester.open( file );
