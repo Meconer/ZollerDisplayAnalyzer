@@ -18,9 +18,9 @@ import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
  */
 class ZollerImage {
     private static final int DEFAULT_THRESHOLD = 100;
-    private static final int NO_OF_DIGITS = 10;
+    private static final int NO_OF_DIGITS = 9;
     private static final int PADDING_DIVISOR = 63;
-    private static final int PADDING_FRACTION_FOR_LAST_DIGIT_1 = 50;
+    private static final int PADDING_FRACTION_FOR_LAST_DIGIT_1 = 30;
     private static final double SHEAR_VALUE = 0.1;
     
     
@@ -56,7 +56,7 @@ class ZollerImage {
         // Do it only for the green channel. The other channels is set to 0.
         // Create the lookup table
 
-        System.out.println("Preparing image");
+        //System.out.println("Preparing image");
 
         short[] threshold = new short[256];
 
@@ -82,6 +82,7 @@ class ZollerImage {
     }
 
     private void analyzeHalf(BufferedImage image) {
+        image = ImageAnalyzer.shearImage(image, SHEAR_VALUE);
         BufferedImage subImage = ImageAnalyzer.getNonEmptyPart(image, PADDING_DIVISOR, 0 );
         if ( checkIfLastDigitIsOne(subImage) ) {
             subImage = ImageAnalyzer.getNonEmptyPart(image, PADDING_DIVISOR, PADDING_FRACTION_FOR_LAST_DIGIT_1 );
@@ -93,7 +94,12 @@ class ZollerImage {
         int width = image.getWidth();
         int digitAreaWidth = width / NO_OF_DIGITS;
         BufferedImage lastDigitImage = image.getSubimage(width-digitAreaWidth, 0, digitAreaWidth, image.getHeight());
-        lastDigitImage = ImageAnalyzer.shearImage( lastDigitImage, SHEAR_VALUE );
+        
+        // If the last digit is one it is possible that some "dirt" from the previous digit is in the left part of
+        // the digit part. Remove that.
+        lastDigitImage = ImageAnalyzer.removeBrightAtLeft( lastDigitImage );
+        
+        //Globals.getEventBus().post(new ImageEvent(ImageEvent.imageType.RIGHT, lastDigitImage));
         
         int digitWidth = ImageAnalyzer.calcFilledWidth(lastDigitImage);
 

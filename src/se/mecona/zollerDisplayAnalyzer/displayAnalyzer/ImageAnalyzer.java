@@ -14,92 +14,129 @@ import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 
 /**
  * Helper util class for image routines on buffered images.
+ *
  * @author Mats
  */
 public class ImageAnalyzer {
-    
-    
+
     // returns a subimage of the non empty parts of
-    public static BufferedImage getNonEmptyPart(BufferedImage image, int paddingFraction, int addExtraFraction ) {
+    public static BufferedImage getNonEmptyPart(BufferedImage image, int paddingFraction, int addExtraFraction) {
         // Get first non empty column
-        int startCol = getNonEmptyCol( image, 0, 1 );
-        
-        int width = getNonEmptyCol(image, image.getWidth()-1, -1) - startCol;
+        int startCol = getNonEmptyCol(image, 0, 1);
+
+        int width = getNonEmptyCol(image, image.getWidth() - 1, -1) - startCol;
         int padding;
-        if ( paddingFraction == 0 ) {
+        if (paddingFraction == 0) {
             padding = 0;
-        }
-        else {
+        } else {
             padding = width / paddingFraction;
         }
-        System.out.println("Padding = "+ padding);
-        
+        //System.out.println("Padding = "+ padding);
+
         int addExtraFractionPadding;
-        if ( addExtraFraction == 0) {
+        if (addExtraFraction == 0) {
             addExtraFractionPadding = 0;
         } else {
             addExtraFractionPadding = width / addExtraFraction;
         }
-        
-        if ( startCol < padding )
+
+        if (startCol < padding) {
             throw new IllegalArgumentException("padding too big for image left");
-        if ( startCol + padding + addExtraFractionPadding + width > image.getWidth())
+        }
+        if (startCol + padding + addExtraFractionPadding + width > image.getWidth()) {
             throw new IllegalArgumentException("padding too big for image right");
-        
+        }
+
         image = image.getSubimage(startCol - padding, 0, width + 2 * padding + addExtraFractionPadding, image.getHeight());
-        
-        int startRow = getNonEmptyRow( image, 0, 1);
-        
-        int height = getNonEmptyRow( image, image.getHeight()-1, -1) - startRow;
-        
-        
+
+        int startRow = getNonEmptyRow(image, 0, 1);
+
+        int height = getNonEmptyRow(image, image.getHeight() - 1, -1) - startRow;
+
         image = image.getSubimage(0, startRow, image.getWidth(), height);
         //Globals.getEventBus().post( new ImageEvent(ImageEvent.imageType.RIGHT, image));
         return image;
     }
 
-    private static int getNonEmptyCol(BufferedImage image, int start, int direction ) {
+    public static int getNonEmptyCol(BufferedImage image, int start, int direction) {
         Raster raster = image.getData();
-        for ( int col = start; col < image.getWidth(); col += direction ) {
-            if ( colIsBright( raster, col )) return col;
-        }
-        return -1; // Not found
-    }
-    
-    private static int getNonEmptyRow(BufferedImage image, int start, int direction ) {
-        Raster raster = image.getData();
-        for ( int row = start; row < image.getHeight(); row += direction ) {
-            if ( rowIsBright( raster, row )) return row;
+        int height = image.getHeight();
+        if (direction > 0) {
+
+            for (int col = start; col < image.getWidth(); col += direction) {
+                if (colIsBright(raster, col, height)) {
+                    return col;
+                }
+            }
+        } else {
+            for (int col = start; col >= 0 ; col += direction) {
+                if (colIsBright(raster, col, height)) {
+                    return col;
+                }
+            }
         }
         return -1; // Not found
     }
 
-    private static boolean colIsBright(Raster raster, int col) {
-        int green;
-        for ( int row = 0; row < raster.getHeight(); row++ ) {
-            green = raster.getSample(col, row, 1);
-            if ( (int) green > 0 ) return true;
+    public static int getEmptyCol(BufferedImage image, int start, int direction) {
+        Raster raster = image.getData();
+        int height = image.getHeight();
+
+        if (direction > 0) {
+
+            for (int col = start; col < image.getWidth(); col += direction) {
+                if (!colIsBright(raster, col, height)) {
+                    return col;
+                }
+            }
+        } else {
+            for (int col = start; col >= 0 ; col += direction) {
+                if (!colIsBright(raster, col, height)) {
+                    return col;
+                }
+            }
+        }
+        return -1; // Not found
+    }
+
+    public static int getNonEmptyRow(BufferedImage image, int start, int direction) {
+        Raster raster = image.getData();
+        int width = image.getWidth();
+        for (int row = start; row < image.getHeight(); row += direction) {
+            if (rowIsBright(raster, row, width)) {
+                return row;
+            }
+        }
+        return -1; // Not found
+    }
+
+    public static boolean colIsBright(Raster raster, int col, int height) {
+
+        for (int row = 0; row < height; row++) {
+            int green = raster.getSample(col, row, 1);
+            if ((int) green > 0) {
+                return true;
+            }
         }
         return false;
     }
 
-    private static boolean rowIsBright(Raster raster, int row) {
+    public static boolean rowIsBright(Raster raster, int row, int width) {
         int pixel;
-        for ( int col = 0; col < raster.getHeight(); col++ ) {
+        for (int col = 0; col < width; col++) {
             pixel = raster.getSample(col, row, 1);
-            if ( (int) pixel > 0 ) return true;
+            if ((int) pixel > 0) {
+                return true;
+            }
         }
         return false;
     }
-    
-    public static BufferedImage shearImage( BufferedImage image, double shearValue ) {
+
+    public static BufferedImage shearImage(BufferedImage image, double shearValue) {
         // Shear image so numbers are straight
         AffineTransform at = AffineTransform.getShearInstance(shearValue, 0);
         AffineTransformOp aop = new AffineTransformOp(at, null);
-        System.out.println("Startar aop");
         BufferedImage transformedImage = aop.filter(image, null);
-        System.out.println("aop klar");
-
 
         return transformedImage;
     }
@@ -109,4 +146,11 @@ public class ImageAnalyzer {
         int endCol = getNonEmptyCol(image, image.getWidth(), -1);
         return endCol - startCol;
     }
+
+    static BufferedImage removeBrightAtLeft(BufferedImage image) {
+        int startCol = getEmptyCol(image, 0, 1);
+        image = image.getSubimage(startCol, 0, image.getWidth() - startCol, image.getHeight());
+        return image;
+    }
+
 }
