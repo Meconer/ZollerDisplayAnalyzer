@@ -19,6 +19,7 @@ import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 public class ImageTester {
     private BufferedImage image;
     private int threshold;
+    private int digitToShow;
     
     public IOResult open(File file) {
         try {
@@ -36,12 +37,17 @@ public class ImageTester {
         if ( image != null ) {
             ZollerImage zollerImage = new ZollerImage( image );
             zollerImage.setThreshold( threshold );
+            zollerImage.setDigitToShow( digitToShow );
             zollerImage.analyze();
         }
     }
 
     public void setThresholdValue(double value) {
         threshold = (int) Math.round(value);
+    }
+
+    public void setDigitNoToShow(int digitToShow) {
+        this.digitToShow = digitToShow;
     }
 
     

@@ -33,6 +33,7 @@
             <Button fx:id="analyzeButton" mnemonicParsing="false" onAction="#onAnalyze" text="Analyze" />
             <Slider fx:id="thresholdSlider" max="255.0" minorTickCount="1" prefHeight="18.0" prefWidth="254.0" snapToTicks="true" value="135.0" />
             <Label fx:id="thresholdLabel" prefHeight="21.0" prefWidth="96.0" />
+            <TextField fx:id="digitNo" promptText="Show digitNo" />
          </children>
          <BorderPane.margin>
             <Insets />

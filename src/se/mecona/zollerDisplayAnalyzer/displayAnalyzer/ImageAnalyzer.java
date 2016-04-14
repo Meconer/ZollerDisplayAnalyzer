@@ -5,10 +5,12 @@
  */
 package se.mecona.zollerDisplayAnalyzer.displayAnalyzer;
 
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import se.mecona.zollerDisplayAnalyzer.gui.Globals;
 import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 
@@ -58,6 +60,7 @@ public class ImageAnalyzer {
         return image;
     }
 
+    // returns the first column that contains any bright pixels. returns -1 if not found.
     public static int getNonEmptyCol(BufferedImage image, int start, int direction) {
         Raster raster = image.getData();
         int height = image.getHeight();
@@ -141,15 +144,36 @@ public class ImageAnalyzer {
         return transformedImage;
     }
 
-    static int calcFilledWidth(BufferedImage image) {
+    public static int calcFilledWidth(BufferedImage image) {
         int startCol = getNonEmptyCol(image, 0, 1);
         int endCol = getNonEmptyCol(image, image.getWidth(), -1);
         return endCol - startCol;
     }
 
-    static BufferedImage removeBrightAtLeft(BufferedImage image) {
+    public static int calcFilledHeight(BufferedImage image) {
+        int startRow = getNonEmptyRow(image, 0, 1);
+        int endRow = getNonEmptyRow(image, image.getHeight(), -1);
+        return endRow - startRow;
+    }
+
+    public static BufferedImage removeBrightAtLeft(BufferedImage image) {
         int startCol = getEmptyCol(image, 0, 1);
         image = image.getSubimage(startCol, 0, image.getWidth() - startCol, image.getHeight());
+        return image;
+    }
+
+    public static boolean isAllBlack(BufferedImage image) {
+        return getEmptyCol(image, 0, 1) == -1;
+        
+    }
+
+    public static BufferedImage fillWithBlack(BufferedImage image, int startCol, int startRow, int width, int height) {
+        WritableRaster raster = image.getSubimage(startCol, startRow, width, height).getRaster();
+        for ( int col = 0; col < width; col++ ) {
+            for ( int row = 0 ; row < height; row++ ) {
+                raster.setSample(col, row, 1, 0);
+            }
+        }
         return image;
     }
 
