@@ -163,15 +163,17 @@ public class ImageAnalyzer {
     }
 
     public static boolean isAllBlack(BufferedImage image) {
-        return getEmptyCol(image, 0, 1) == -1;
+        return getNonEmptyCol(image, 0, 1) == -1;
         
     }
 
     public static BufferedImage fillWithBlack(BufferedImage image, int startCol, int startRow, int width, int height) {
         WritableRaster raster = image.getSubimage(startCol, startRow, width, height).getRaster();
-        for ( int col = 0; col < width; col++ ) {
-            for ( int row = 0 ; row < height; row++ ) {
+        for ( int col = 0; col <= width; col++ ) {
+            for ( int row = 0 ; row <= height; row++ ) {
+                raster.setSample(col, row, 0, 0);
                 raster.setSample(col, row, 1, 0);
+                raster.setSample(col, row, 2, 0);
             }
         }
         return image;

@@ -53,7 +53,7 @@ public class UiController {
     @FXML
     private void onOpen() {
         FileChooser fileChooser = new FileChooser();
-        File dir = new File("E:\\Mats");
+        File dir = new File("E:\\NetBeansProjects\\ZollerDisplayAnalyzer\\TestImages");
         if (dir.exists()) {
             fileChooser.setInitialDirectory(dir);
         } else {
@@ -75,7 +75,11 @@ public class UiController {
     private void onAnalyze() {
         imageTester.setThresholdValue(thresholdSlider.getValue());
         imageTester.setDigitNoToShow(Integer.parseInt(digitNo.getText()));
+        long startTime = System.currentTimeMillis();
         imageTester.analyze();
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
     }
 
     @FXML
@@ -90,6 +94,13 @@ public class UiController {
         alert.setTitle("About");
         alert.setContentText("Test application for zollerDisplayAnalyzer");
         alert.show();
+    }
+
+    @FXML
+    private void onRunTests() {
+        imageTester.setThresholdValue(thresholdSlider.getValue());
+        imageTester.setDigitNoToShow(Integer.parseInt(digitNo.getText()));
+        imageTester.runTests();
     }
 
     @Subscribe
@@ -116,7 +127,7 @@ public class UiController {
                         thresholdSlider.valueProperty()
                 )
         );
-        digitNo.setText( "5" );
+        digitNo.setText("5");
     }
 
 }
