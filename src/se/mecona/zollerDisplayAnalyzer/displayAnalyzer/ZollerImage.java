@@ -112,17 +112,18 @@ class ZollerImage {
 
             //Globals.getEventBus().post( new ImageEvent(ImageEvent.imageType.RIGHT, image));
 
-            if ( analyzeRow != AnalyzeRow.LOWER ) {
+            if ( analyzeRow == AnalyzeRow.UPPER || analyzeRow == AnalyzeRow.BOTH ) {
                 // Analyzes the upper half of the image
                 // Get the upper half of the image.
-                BufferedImage imageUpper = image.getSubimage(0, 0, image.getWidth(), image.getHeight() / 2);
-                analyzeDigitRow(imageUpper, AnalyzeRow.UPPER);
+                BufferedImage imageLower = image.getSubimage(0, image.getHeight() / 2, image.getWidth(), image.getHeight() / 2);
+                analyzeDigitRow(imageLower, AnalyzeRow.LOWER);
             }
-            if ( analyzeRow != AnalyzeRow.UPPER ) {
+
+            if ( analyzeRow == AnalyzeRow.LOWER  || analyzeRow == AnalyzeRow.BOTH) {
                 // Analyzes the lower half of the image
                 // Get the upper half of the image.
                 BufferedImage imageUpper = image.getSubimage(0, 0, image.getWidth(), image.getHeight() / 2);
-                analyzeDigitRow(imageUpper, AnalyzeRow.LOWER);
+                analyzeDigitRow(imageUpper, AnalyzeRow.UPPER);
             }
         }
 

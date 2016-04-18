@@ -40,9 +40,14 @@ public class ImageTester {
             ZollerImage zollerImage = new ZollerImage(image);
             zollerImage.setThreshold(threshold);
             zollerImage.setDigitToShow(digitToShow);
-            zollerImage.analyze(ZollerImage.AnalyzeRow.UPPER);
+
+            zollerImage.analyze(ZollerImage.AnalyzeRow.BOTH);
+
             String upperDigits = zollerImage.getDigits(AnalyzeRow.UPPER);
             System.out.println("Upper digits = " + upperDigits);
+
+            String lowerDigits = zollerImage.getDigits(AnalyzeRow.LOWER);
+            System.out.println("Lower digits = " + lowerDigits);
         }
     }
 

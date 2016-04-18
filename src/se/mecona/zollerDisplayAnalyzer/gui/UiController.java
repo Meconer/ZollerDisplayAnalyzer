@@ -75,11 +75,7 @@ public class UiController {
     private void onAnalyze() {
         imageTester.setThresholdValue(thresholdSlider.getValue());
         imageTester.setDigitNoToShow(Integer.parseInt(digitNo.getText()));
-        long startTime = System.currentTimeMillis();
         imageTester.analyze();
-        long endTime = System.currentTimeMillis();
-
-        System.out.println("That took " + (endTime - startTime) + " milliseconds");
     }
 
     @FXML
