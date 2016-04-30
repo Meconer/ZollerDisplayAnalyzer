@@ -87,6 +87,32 @@ public class ImageTester {
             "113.663"
         };
 
+        String[] lowerNumbers = {".055",
+            ".056",
+            ".056",
+            ".056",
+            ".056",
+            ".056",
+            ".056",
+            ".056",
+            ".056",
+            ".056",
+            ".057",
+            ".057",
+            ".057",
+            ".057",
+            ".057",
+            ".058",
+            ".058",
+            ".058",
+            ".058",
+            ".058",
+            ".058",
+            ".058",
+            "34.788",
+            ".022"
+        };
+
         int errorCount = 0;
 
         while (picNo < upperNumbers.length) {
@@ -97,7 +123,8 @@ public class ImageTester {
                 ZollerImage zollerImage = new ZollerImage(ior.getData());
                 zollerImage.setThreshold(threshold);
                 zollerImage.setDigitToShow(digitToShow);
-                zollerImage.analyze(ZollerImage.AnalyzeRow.UPPER);
+                zollerImage.analyze(ZollerImage.AnalyzeRow.BOTH);
+                
                 String upperDigits = zollerImage.getDigits(AnalyzeRow.UPPER);
                 if ( !upperDigits.equals(upperNumbers[picNo]) ) {
                     System.out.println("********** Analysis Error!! ***********");
@@ -107,6 +134,17 @@ public class ImageTester {
                 } else {
                     //System.out.println("File: " + fileName);
                     System.out.println("Digits : " + upperDigits);
+                }
+                
+                String lowerDigits = zollerImage.getDigits(AnalyzeRow.LOWER);
+                if ( !lowerDigits.equals(lowerNumbers[picNo]) ) {
+                    System.out.println("********** Analysis Error!! ***********");
+                    System.out.println("Lower digits = " + lowerDigits + " : should be : " + lowerNumbers[picNo]);
+                    System.out.println("File: " + fileName);
+                    errorCount++;
+                } else {
+                    //System.out.println("File: " + fileName);
+                    System.out.println("Digits : " + lowerDigits);
                 }
             }
             picNo++;
