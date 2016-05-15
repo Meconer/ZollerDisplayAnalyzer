@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright Mats Andersson, Mecona Teknik AB
  */
 package se.mecona.zollerDisplayAnalyzer.displayAnalyzer;
 
@@ -15,7 +13,7 @@ import se.mecona.zollerDisplayAnalyzer.gui.ImageEvent;
 
 /**
  *
- * @author Mats
+ * @author Mats Andersson Mecona Teknik AB
  */
 public class ImageTester {
 
@@ -23,10 +21,18 @@ public class ImageTester {
     private int threshold;
     private int digitToShow;
 
+    /**
+     * Opens an image file. It also sends the image on the event bus for the gui
+     * to show.
+     * 
+     * @param file  The file to open
+     * @return an IOResult object with the data and status information.
+     * @see IOResult
+     */
     public IOResult open(File file) {
         try {
             image = ImageIO.read(file);
-            Globals.getEventBus().post(new ImageEvent(ImageEvent.imageType.LEFT, image));
+            Globals.getEventBus().post(new ImageEvent(ImageEvent.selectedImageView.LEFT, image));
             return new IOResult<>(true, image);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -35,6 +41,10 @@ public class ImageTester {
         }
     }
 
+    /**
+     * Analyzes the image contained in this object, if it exists.
+     * Stores the result internally
+     */
     public void analyze() {
         if (image != null) {
             ZollerImage zollerImage = new ZollerImage(image);
@@ -51,14 +61,30 @@ public class ImageTester {
         }
     }
 
+    /**
+     * Sets the threshold value for the analysis. Every pixel brighter than the
+     * threshold value is set to full bright and all others are set to dark.
+     * @param value The threshold value (0-255)
+     */
     public void setThresholdValue(double value) {
         threshold = (int) Math.round(value);
     }
 
+    /**
+     * Set digit to show field. Used to send the image containing the digit in 
+     * this position via the event bus. For debugging purposes.
+     * @param digitToShow The digit position to send via event bus.
+     */
     public void setDigitNoToShow(int digitToShow) {
         this.digitToShow = digitToShow;
     }
 
+    /**
+     * Run a test sequence. For debugging purposes. Takes a series of images
+     * containing display pictures, analyzes them and checks to see if the 
+     * result is correct. Two arrays of correct numbers is set first. Sends
+     * the result of the test to standard output.
+     */
     public void runTests() {
         int picNo = 0;
         String[] upperNumbers = {"140.500",

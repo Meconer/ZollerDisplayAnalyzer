@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright Mats Andersson, Mecona Teknik AB
  */
 package se.mecona.zollerDisplayAnalyzer.gui;
 
 import com.google.common.eventbus.EventBus;
 
 /**
- *
+ * Singelton class for global data.
  * @author Mats
  */
 public class Globals {
@@ -17,6 +15,10 @@ public class Globals {
         
     }
 
+    /**
+     * 
+     * @return the static eventbus instance
+     */
     public static EventBus getEventBus() {
         return eventBus;
     }

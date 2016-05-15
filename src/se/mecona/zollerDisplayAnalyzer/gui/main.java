@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright Mats Andersson, Mecona Teknik AB
  */
 package se.mecona.zollerDisplayAnalyzer.gui;
 
@@ -12,8 +10,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
- * @author Mats
+ * Main class for Zoller display analyzer. A program to get digits from the 
+ * display of a Zoller tool presetter.
+ * @author Mats Andersson, Mecona Teknik AB
  */
 public class main extends Application {
     

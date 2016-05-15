@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright Mats Andersson, Mecona Teknik AB
  */
 package se.mecona.zollerDisplayAnalyzer.gui;
 
@@ -45,12 +43,19 @@ public class UiController {
     @FXML
     private TextField digitNo;
 
+    /**
+     * Constructor. Creates the imageTester object and registers google guavas 
+     * eventbus
+     */
     public UiController() {
         imageTester = new ImageTester();
         Globals.getEventBus().register(this);
     }
 
     @FXML
+    /**
+     * Handler for the File - Open menu choice
+     */
     private void onOpen() {
         FileChooser fileChooser = new FileChooser();
         File dir = new File("E:\\NetBeansProjects\\ZollerDisplayAnalyzer\\TestImages");
@@ -72,6 +77,10 @@ public class UiController {
     }
 
     @FXML
+    /**
+     * Handler for the analyze button. Sets up imageTester object from
+     * ui elements and calls the analyzer.
+     */
     private void onAnalyze() {
         imageTester.setThresholdValue(thresholdSlider.getValue());
         imageTester.setDigitNoToShow(Integer.parseInt(digitNo.getText()));
@@ -79,11 +88,17 @@ public class UiController {
     }
 
     @FXML
+    /**
+     * Close event handler
+     */
     private void onClose() {
         System.exit(0);
     }
 
     @FXML
+    /**
+     * Handler for the Help - About menu choice.
+     */
     private void onAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -93,6 +108,10 @@ public class UiController {
     }
 
     @FXML
+    /**
+     * Handler for the "Run Tests" button
+     * Sets up the imageTester objects from ui elements and runs the tests.
+     */
     private void onRunTests() {
         imageTester.setThresholdValue(thresholdSlider.getValue());
         imageTester.setDigitNoToShow(Integer.parseInt(digitNo.getText()));
@@ -100,11 +119,15 @@ public class UiController {
     }
 
     @Subscribe
+    /**
+     * Handler for ImageEvent. Displays the image sent in the event in either
+     * the left or right image view.
+     */
     private void handleDebugImageEvent(ImageEvent event) {
         BufferedImage image = event.getImage();
         WritableImage wimg = new WritableImage(image.getWidth(), image.getHeight());
         SwingFXUtils.toFXImage(image, wimg);
-        switch (event.getType()) {
+        switch (event.getSelectedView()) {
             case LEFT:
                 imageView1.setImage(wimg);
                 break;
@@ -116,6 +139,9 @@ public class UiController {
         }
     }
 
+    /**
+     *
+     */
     public void initialize() {
         thresholdLabel.textProperty().bind(
                 Bindings.format(
