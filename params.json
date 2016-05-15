@@ -1,0 +1,6 @@
+{
+  "name": "Zollerdisplayanalyzer",
+  "tagline": "Application to test a zoller display analysis class",
+  "body": "Application to test a zoller display analysis class\r\n\r\nThe app is divided in two parts, the gui part and the analysis part.\r\n\r\nThe analysis part is made to be used in one of my projects on a raspberry pi placed in front of the display of a Zoller tool presetter.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
