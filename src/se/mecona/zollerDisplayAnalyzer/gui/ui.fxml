@@ -28,20 +28,33 @@
       </MenuBar>
    </top>
    <bottom>
-      <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="analyzeButton" mnemonicParsing="false" onAction="#onAnalyze" text="Analyze" />
-            <Slider fx:id="thresholdSlider" blockIncrement="1.0" max="255.0" minorTickCount="1" prefHeight="40.0" prefWidth="562.0" showTickLabels="true" snapToTicks="false" value="87" />
-            <Label fx:id="thresholdLabel" prefHeight="21.0" prefWidth="96.0" />
-            <TextField fx:id="digitNo" promptText="Show digitNo" />
-            <Button mnemonicParsing="false" onAction="#onRunTests" text="Kör testsekvens" />
-         </children>
+      <VBox BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding></HBox>
+         <children>
+            <HBox prefHeight="45.0" prefWidth="1900.0">
+               <children>
+                  <Label prefHeight="45.0" prefWidth="68.0" text="Upper" />
+                  <Label fx:id="upperLabel" layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="151.0" />
+                  <Label layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="68.0" text="Lower" />
+                  <Label fx:id="lowerLabel" layoutX="78.0" layoutY="10.0" prefHeight="45.0" prefWidth="151.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="analyzeButton" mnemonicParsing="false" onAction="#onAnalyze" text="Analyze" />
+                  <Slider fx:id="thresholdSlider" blockIncrement="1.0" max="255.0" minorTickCount="1" prefHeight="40.0" prefWidth="562.0" showTickLabels="true" snapToTicks="false" value="87" />
+                  <Label fx:id="thresholdLabel" prefHeight="21.0" prefWidth="96.0" />
+                  <TextField fx:id="digitNo" prefHeight="31.0" prefWidth="71.0" promptText="Show digitNo" />
+                  <Button mnemonicParsing="false" onAction="#onRunTests" prefHeight="31.0" prefWidth="140.0" text="Run tests" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
    </bottom>
    <center>
       <HBox BorderPane.alignment="CENTER">

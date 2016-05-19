@@ -20,6 +20,8 @@ public class ImageTester {
     private BufferedImage image;
     private int threshold;
     private int digitToShow;
+    private String lowerDigits;
+    private String upperDigits;
 
     /**
      * Opens an image file. It also sends the image on the event bus for the gui
@@ -53,10 +55,10 @@ public class ImageTester {
 
             zollerImage.analyze(ZollerImage.AnalyzeRow.BOTH);
 
-            String upperDigits = zollerImage.getDigits(AnalyzeRow.UPPER);
+            upperDigits = zollerImage.getDigits(AnalyzeRow.UPPER);
             System.out.println("Upper digits = " + upperDigits);
 
-            String lowerDigits = zollerImage.getDigits(AnalyzeRow.LOWER);
+            lowerDigits = zollerImage.getDigits(AnalyzeRow.LOWER);
             System.out.println("Lower digits = " + lowerDigits);
         }
     }
@@ -177,6 +179,23 @@ public class ImageTester {
         }
         if ( errorCount > 0 ) System.out.println(errorCount + " errors in analysis");
         else System.out.println("No errors");
+    }
+
+    /**
+     * Get the upper digit result.
+     * @return the upper digits as analyzed.
+     */
+    public String getUpper() {
+        return upperDigits;
+    }
+
+    
+    /**
+     * Get the lower digit result.
+     * @return the lower digits as analyzed.
+     */
+    public String getLower() {
+        return lowerDigits;
     }
 
 }

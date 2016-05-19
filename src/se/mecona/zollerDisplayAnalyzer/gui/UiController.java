@@ -43,6 +43,13 @@ public class UiController {
     @FXML
     private TextField digitNo;
 
+    @FXML
+    private Label lowerLabel;
+
+    @FXML
+    private Label upperLabel;
+
+    
     /**
      * Constructor. Creates the imageTester object and registers google guavas 
      * eventbus
@@ -85,6 +92,8 @@ public class UiController {
         imageTester.setThresholdValue(thresholdSlider.getValue());
         imageTester.setDigitNoToShow(Integer.parseInt(digitNo.getText()));
         imageTester.analyze();
+        upperLabel.setText(imageTester.getUpper());
+        lowerLabel.setText(imageTester.getLower());
     }
 
     @FXML
@@ -116,6 +125,7 @@ public class UiController {
         imageTester.setThresholdValue(thresholdSlider.getValue());
         imageTester.setDigitNoToShow(Integer.parseInt(digitNo.getText()));
         imageTester.runTests();
+        
     }
 
     @Subscribe
