@@ -53,5 +53,7 @@ half of the image at a time.
 * In the original image the digits are leaning a little. A shearing operation is
 done so they are straightened.
 
+![image](https://cloud.githubusercontent.com/assets/7084694/15448875/5d4694ca-1f6e-11e6-93cb-0db9025dcedd.png)
+
 * The
 
