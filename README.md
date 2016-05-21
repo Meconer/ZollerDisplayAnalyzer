@@ -26,3 +26,5 @@ The eventbus is from the google guava library. The DisplayAnalyzer package
 uses it only for sending images to the gui. The reason I used guava is because
 I wanted to try it out a little. It's easily deleted if you don't need the 
 image sending.
+
+### Analysis steps
