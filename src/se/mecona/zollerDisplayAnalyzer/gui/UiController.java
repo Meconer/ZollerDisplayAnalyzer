@@ -77,9 +77,7 @@ public class UiController {
 
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            IOResult<BufferedImage> iOResult = imageTester.open(file);
-            if (iOResult.isOk() && iOResult.hasData()) {
-            }
+            imageTester.open(file);
         }
     }
 
