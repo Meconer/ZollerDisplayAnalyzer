@@ -15,7 +15,9 @@ to the right.
 If you want to play with the code there is a way to get intermediate images
 displayed. You just need to send it via the eventbus with the call:
 
+```java
 Globals.getEventBus().post( new ImageEvent(ImageEvent.imageType.RIGHT, image));
+```
 
 Of course, if you have more than one of these calls the last one will be the
 only one shown.
