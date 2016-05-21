@@ -28,3 +28,30 @@ I wanted to try it out a little. It's easily deleted if you don't need the
 image sending.
 
 ### Analysis steps
+
+The analysis is done in a few steps I am trying to explain here.
+
+First the image is loaded from disk into an object of the imageTester class
+created by the gui.
+
+The analysis process is started with the press of the "Analyze" button. The
+threshold value is set from the slider in the ui. The digit to show in the
+ui is also set up from the text field.
+
+A call to imageTester.analyze starts the analysis. The imageTester object 
+then creates a new object of class ZollerImage which does
+the real work.
+
+* The zollerImage objects firsts prepares the image by applying a threshold
+operation to clean up the image. It is only done in the green channel since
+the display is mostly green.
+
+* Then a check is made wich part of the image should be analyzed. I've done this
+to save time if only one of the two numbers is needed. The analysis is made on
+half of the image at a time.
+
+* In the original image the digits are leaning a little. A shearing operation is
+done so they are straightened.
+
+* The
+
