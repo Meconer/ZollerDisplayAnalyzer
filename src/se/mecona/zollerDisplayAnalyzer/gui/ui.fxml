@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
@@ -36,9 +37,17 @@
             <HBox prefHeight="45.0" prefWidth="1900.0">
                <children>
                   <Label prefHeight="45.0" prefWidth="68.0" text="Upper" />
-                  <Label fx:id="upperLabel" layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="151.0" />
+                  <Label fx:id="upperLabel" layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="151.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                   <Label layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="68.0" text="Lower" />
-                  <Label fx:id="lowerLabel" layoutX="78.0" layoutY="10.0" prefHeight="45.0" prefWidth="151.0" />
+                  <Label fx:id="lowerLabel" layoutX="78.0" layoutY="10.0" prefHeight="45.0" prefWidth="151.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
