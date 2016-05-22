@@ -71,9 +71,11 @@ really) positions are in the image.
 
 There is one additional problem however. The last digit could be a "1". Since
 this display has 12 segments the segments for the digit "1" is not the rightmost
-segments but they are in the middle. We have to consider this and thus we have
+segments but in the middle. We have to consider this and thus we have
 an extra check for this in the method checkIfLastDigitIsOne. In this method we
 check the width of the bright part in this digit position. If it is less than
 a third of the total width then we decide that this must be a "1" and the image
 is recropped with a little more area to the right. This extra width is set with
 the PADDING_FRACTION_FOR_LAST_DIGIT_1 constant.
+
+This description is work in progress but will hopefully be ready soon.
