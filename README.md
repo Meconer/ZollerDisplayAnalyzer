@@ -139,6 +139,7 @@ digits.
         
 It turns out that we only need to look at 6 different segments.To do this we
 split the digit image in eight parts vertically and tree parts horisontally.
+
                     colStart    colEnd     rowStart     rowEnd
         Area 0      0          1/3         1/8         3/8
         Area 1      0          1/3         5/8         7/8
