@@ -48,7 +48,7 @@ the display is mostly green.
 
 * Then a check is made wich part of the image should be analyzed. I've done this
 to save time if only one of the two numbers is needed. The analysis is made on
-half of the image at a time.
+half of the image at a time in the method AnalyzeDigitRow
 
 * In the original image the digits are leaning a little. A shearing operation is
 done so they are straightened.
@@ -64,6 +64,9 @@ of the nine sub images. To fix this I use a constant PADDING_DIVISOR. I take
 the width of the bright area, divide it with PADDING_DIVISOR and then get the
 number of pixel columns that should be added to the left and right.
 
+If, for example, the bright area is 644 pixels wide and PADDING_DIVISOR is 50,
+we add 644/50 = 12 pixels to the right and left.
+
 Since the first position always has a letter in it (X or Z in the test images) 
 and the last position always has a digit we know that these positions is always
 bright. This makes it easier since we always know how many digit (or symbols 
@@ -77,5 +80,23 @@ check the width of the bright part in this digit position. If it is less than
 a third of the total width then we decide that this must be a "1" and the image
 is recropped with a little more area to the right. This extra width is set with
 the PADDING_FRACTION_FOR_LAST_DIGIT_1 constant.
+
+All this is handled in the method getNonEmptyArea.
+
+Now we have an image looking like this:
+![image](https://cloud.githubusercontent.com/assets/7084694/15453582/635a28a6-201b-11e6-98ba-7c6c695e5b37.png)
+
+
+* Now that we have got the digit area we can start to analyze each digit position.
+This is made in the analyzeDigitImage method.
+There are som special positions in this display. The first position is always a
+letter containing the measuring axis. We don't care about this one so we just
+ignore it and store the NO_DIGIT constant.
+
+The next position is always the sign position. For this we only need to see if
+the digit area has any bright pixels in it since there is no plus sign. Only 
+minus if it is a negative number.
+
+For the following positions there is a  
 
 This description is work in progress but will hopefully be ready soon.
