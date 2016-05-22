@@ -42,20 +42,20 @@ A call to imageTester.analyze starts the analysis. The imageTester object
 then creates a new object of class ZollerImage which does
 the real work.
 
-* The zollerImage objects firsts prepares the image by applying a threshold
+The zollerImage objects firsts prepares the image by applying a threshold
 operation to clean up the image. It is only done in the green channel since
 the display is mostly green.
 
-* Then a check is made wich part of the image should be analyzed. I've done this
+Then a check is made wich part of the image should be analyzed. I've done this
 to save time if only one of the two numbers is needed. The analysis is made on
 half of the image at a time in the method AnalyzeDigitRow
 
-* In the original image the digits are leaning a little. A shearing operation is
+In the original image the digits are leaning a little. A shearing operation is
 done so they are straightened.
 
 ![image](https://cloud.githubusercontent.com/assets/7084694/15448910/30b3f456-1f6f-11e6-97af-af4bc73ea8ae.png)
 
-* Now the image is cropped so the black area around the digits is removed. This
+Now the image is cropped so the black area around the digits is removed. This
 is an important part of the process. I have to consider the space between the 
 digits. We need to save a little part to the left and right that is equal to 
 half the space width. If we don't do this and divide the remaining image in 
@@ -87,7 +87,7 @@ Now we have an image looking like this:
 ![image](https://cloud.githubusercontent.com/assets/7084694/15453582/635a28a6-201b-11e6-98ba-7c6c695e5b37.png)
 
 
-* Now that we have got the digit area we can start to analyze each digit position.
+Now that we have got the digit area we can start to analyze each digit position.
 This is made in the analyzeDigitImage method.
 There are som special positions in this display. The first position is always a
 letter containing the measuring axis. We don't care about this one so we just
@@ -102,7 +102,7 @@ set the area containg the point to black so it don't interfer with the segment
 analysis. I divided the width into four parts and the height in eight parts and
 sets the lowest rightmost 1/4 by 1/8 to black.
 
-* Finally it's time to look at the different segments of each digit. First we 
+Finally it's time to look at the different segments of each digit. First we 
 remove the black empty part around the digit. We can then look at the width of
 the remaining part. If it is narrow, the digit is a "1". This check is made in
 the method isOne. Otherwise we carry on and look at the segments.
@@ -136,5 +136,29 @@ digits.
         8 - none empty
         9 - 1 empty
         0 - 3-8 empty
+        
+It turns out that we only need to look at 6 different segments.To do this we
+split the digit image in eight parts vertically and tree parts horisontally.
+                    colStart    colEnd     rowStart     rowEnd
+        Area 0      0          1/3         1/8         3/8
+        Area 1      0          1/3         5/8         7/8
+        Area 10     2/3        3/3         1/8         3/8
+        Area 11     2/3        3/3         5/8         7/8
+        Area 2-7    1/3        2/3         0           2/8
+        Area 3-8    1/3        2/3         3/8         5/8
+        
+This is done in the method analyzeSegments.
 
-This description is work in progress but will hopefully be ready soon.
+After this we hopefully get the correct digit. This is the second version of
+my analysis algorithm. With the first, I got some wrong readings. I haven't done
+any statistics but it is much less than 1% error. With this version I have added
+a way of reporting errors in the reading but so far after severeal weeks of 
+usage I am not aware of a single error. Hopefully this continues but previously
+I noticed that it is a little different lighting in building depending of the
+time of the year so I have adjusted the exposure a little bit a few times.
+
+The main difference in this second version is that I take advantage of the 
+digit positions. The sign and decimal point is always in the same place which 
+seem to make the algorithm more secure.
+
+
