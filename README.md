@@ -56,7 +56,7 @@ done so they are straightened.
 ![image](https://cloud.githubusercontent.com/assets/7084694/15448910/30b3f456-1f6f-11e6-97af-af4bc73ea8ae.png)
 
 * Now the image is cropped so the black area around the digits is removed. This
-is an important part of the process. We have to consider the space between the 
+is an important part of the process. I have to consider the space between the 
 digits. We need to save a little part to the left and right that is equal to 
 half the space width. If we don't do this and divide the remaining image in 
 nine parts (one for each digit) We won't get the digits in the middle of each
@@ -97,6 +97,44 @@ The next position is always the sign position. For this we only need to see if
 the digit area has any bright pixels in it since there is no plus sign. Only 
 minus if it is a negative number.
 
-For the following positions there is a  
+The position containing the decimal point is always position no 5. For this, we
+set the area containg the point to black so it don't interfer with the segment
+analysis. I divided the width into four parts and the height in eight parts and
+sets the lowest rightmost 1/4 by 1/8 to black.
+
+* Finally it's time to look at the different segments of each digit. First we 
+remove the black empty part around the digit. We can then look at the width of
+the remaining part. If it is narrow, the digit is a "1". This check is made in
+the method isOne. Otherwise we carry on and look at the segments.
+
+If we number the segments like this:
+
+         -- 2 -- -- 7 --
+        |       |       |
+        |       |       |
+        0       5      10
+        |       |       |
+        |       |       |
+         -- 3 -- -- 8 --
+        |       |       |
+        |       |       |
+        1       6      11
+        |       |       |
+        |       |       |
+         -- 4 -- -- 9 --  
+
+and do a bit of thinking we get the following unique patterns for the different
+digits. 
+
+        1 - already detected 
+        2 - 0 and 11 empty
+        3 - 0 and 1 empty
+        4 - 1 and 2-7 empty
+        5 - 1 and 10 empty
+        6 - 10 empty
+        7 - 0, 1 and 3-8 empty
+        8 - none empty
+        9 - 1 empty
+        0 - 3-8 empty
 
 This description is work in progress but will hopefully be ready soon.
